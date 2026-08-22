@@ -66,6 +66,13 @@ function buildEmailText(inquiry) {
   ].join("\n");
 }
 
+function normalizeTelegramBotToken(value) {
+  return sanitize(value)
+    .replace(/^https:\/\/api\.telegram\.org\/bot/i, "")
+    .replace(/^bot/i, "")
+    .replace(/\/sendMessage$/i, "")
+    .trim();
+}
 function buildTelegramText(inquiry) {
   return [
     "New website enquiry",
@@ -83,7 +90,7 @@ function buildTelegramText(inquiry) {
 }
 
 async function sendTelegramAlert(inquiry) {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const botToken = normalizeTelegramBotToken(process.env.TELEGRAM_BOT_TOKEN);
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!botToken || !chatId) {
@@ -183,4 +190,5 @@ module.exports = async function handler(req, res) {
 
   return json(res, 200, { success: true, id: result.id || null });
 };
+
 
