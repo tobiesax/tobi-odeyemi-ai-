@@ -348,11 +348,25 @@ function ImageStage() {
         className="portrait-wrap"
       >
         <div className="portrait-halo" />
-        <img
-          src="/tobi-hero-green-suit.png"
-          alt="Tobi Odeyemi holding a saxophone in a green tailored suit"
-          className="portrait-image"
-        />
+        <picture>
+          <source
+            type="image/webp"
+            srcSet="/tobi-hero-green-suit-640.webp 640w, /tobi-hero-green-suit-768.webp 768w, /tobi-hero-green-suit-1024.webp 1024w"
+            sizes="(max-width: 768px) 88vw, (max-width: 1200px) 72vw, 540px"
+          />
+          <img
+            src="/tobi-hero-green-suit-768.png"
+            srcSet="/tobi-hero-green-suit-640.png 640w, /tobi-hero-green-suit-768.png 768w, /tobi-hero-green-suit.png 1024w"
+            sizes="(max-width: 768px) 88vw, (max-width: 1200px) 72vw, 540px"
+            width="1024"
+            height="1536"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            alt="Tobi Odeyemi holding a saxophone in a green tailored suit"
+            className="portrait-image"
+          />
+        </picture>
       </motion.div>
     </motion.div>
   );
@@ -870,5 +884,6 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
 
 

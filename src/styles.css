@@ -362,6 +362,11 @@ a {
   max-width: 100%;
 }
 
+.portrait-wrap picture {
+  display: block;
+  width: 100%;
+}
+
 .portrait-image {
   display: block;
   width: 100%;
@@ -2279,6 +2284,7 @@ a {
     height: 10px;
   }
 }
+
 
 
 
