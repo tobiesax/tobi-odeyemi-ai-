@@ -14,17 +14,12 @@ import {
   Music2,
   Phone,
   Play,
-  Sparkles,
   Star,
   SunMedium,
   X,
 } from "lucide-react";
 import "./styles.css";
-import {
-  ContentCalendar,
-  LeadScorer,
-  ResidencyPitchGenerator,
-} from "./ai/AIFeatures";
+const AdminPanel = React.lazy(() => import("./ai/AdminPanel"));
 
 const navItems = ["About", "Music", "Services", "Clients", "Gallery", "Reviews", "FAQ"];
 
@@ -84,14 +79,14 @@ const serviceCards = [
 const clientLogos = ["Cisco", "AmCham", "Deloitte", "Vodacom", "CEO Awards", "Powerstar", "AFGRI"];
 
 const galleryItems = [
-  { title: "Garden Performance", src: "/gallery-01.jpg", tone: "mono" },
-  { title: "CEIAS Awards", src: "/gallery-02.jpg", tone: "event" },
-  { title: "AmCham South Africa", src: "/gallery-03.jpg", tone: "portrait" },
-  { title: "Deloitte Impact Awards", src: "/gallery-04.jpg", tone: "event" },
-  { title: "Cisco Partner Event", src: "/gallery-05.jpg", tone: "portrait" },
-  { title: "Vodacom Outdoor Function", src: "/gallery-06.jpg", tone: "lifestyle" },
-  { title: "Powerstar Conference", src: "/gallery-07.jpg", tone: "portrait" },
-  { title: "AFGRI Experience", src: "/gallery-08.jpg", tone: "wide" },
+  { title: "Garden Performance", src: "/gallery-01-optimized.jpg", tone: "mono" },
+  { title: "CEIAS Awards", src: "/gallery-02-optimized.jpg", tone: "event" },
+  { title: "AmCham South Africa", src: "/gallery-03-optimized.jpg", tone: "portrait" },
+  { title: "Deloitte Impact Awards", src: "/gallery-04-optimized.jpg", tone: "event" },
+  { title: "Cisco Partner Event", src: "/gallery-05-optimized.jpg", tone: "portrait" },
+  { title: "Vodacom Outdoor Function", src: "/gallery-06-optimized.jpg", tone: "lifestyle" },
+  { title: "Powerstar Conference", src: "/gallery-07-optimized.jpg", tone: "portrait" },
+  { title: "AFGRI Experience", src: "/gallery-08-optimized.jpg", tone: "wide" },
 ];
 
 const reviews = [
@@ -421,7 +416,7 @@ function ReelShowcase() {
         {reelSlots.map((item) => (
           <article className={item.src ? "reel-slot has-video" : "reel-slot"} key={item.title}>
             {item.src ? (
-              <video src={item.src} controls playsInline preload="metadata" />
+              <video src={item.src} controls playsInline preload="none" />
             ) : (
               <div className="reel-placeholder" aria-hidden="true">
                 <i><Play size={20} fill="currentColor" strokeWidth={1.5} /></i>
@@ -451,7 +446,12 @@ function AboutSection() {
     <section className="content-section about-section" id="about">
       <div className="section-inner about-layout">
         <motion.div className="about-visual" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }}>
-          <img src="/about-me.jpg" alt="Tobi Odeyemi seated with a saxophone in formal performance attire" />
+          <img
+            src="/about-me.jpg"
+            alt="Tobi Odeyemi seated with a saxophone in formal performance attire"
+            loading="lazy"
+            decoding="async"
+          />
           <span />
         </motion.div>
         <div className="about-content">
@@ -514,7 +514,7 @@ function MusicSection() {
             <div className="video-grid">
               {youtubeVideos.map(([id, title]) => (
                 <a className="video-card" href={`https://youtube.com/watch?v=${id}`} target="_blank" rel="noreferrer" key={id}>
-                  <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={title} loading="lazy" />
+                  <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt={title} loading="lazy" decoding="async" />
                   <i><Play size={18} fill="currentColor" /></i>
                   <strong>{title}</strong>
                 </a>
@@ -593,7 +593,7 @@ function GallerySection() {
               whileHover={{ y: -6 }}
               transition={{ duration: 0.25 }}
             >
-              <img src={item.src} alt={item.title} />
+              <img src={item.src} alt={item.title} loading="lazy" decoding="async" />
               <figcaption>{item.title}</figcaption>
             </motion.figure>
           ))}
@@ -802,45 +802,6 @@ function QuickEnquiryBand() {
     </section>
   );
 }
-function AdminPanel() {
-  const [tool, setTool] = React.useState("leads");
-  const tools = [
-    { id: "leads", label: "Lead Scorer", node: <LeadScorer /> },
-    { id: "calendar", label: "Content Calendar", node: <ContentCalendar /> },
-    { id: "pitch", label: "Residency Pitch", node: <ResidencyPitchGenerator /> },
-  ];
-
-  return (
-    <main className="min-h-screen bg-[#021B16] text-ivory" style={{ padding: "3.5rem 1.5rem" }}>
-      <div style={{ maxWidth: 880, margin: "0 auto" }}>
-        <p className="section-eyebrow section-eyebrow-dark">Backstage</p>
-        <h1 className="section-title section-title-light" style={{ fontSize: "2.4rem", marginBottom: "2rem" }}>
-          Tobi's AI Admin Tools
-        </h1>
-        <div className="ai-pill-row" style={{ marginBottom: "2.5rem" }}>
-          {tools.map((t) => (
-            <button
-              className={`ai-pill ${tool === t.id ? "active" : ""}`}
-              type="button"
-              onClick={() => setTool(t.id)}
-              key={t.id}
-              style={{ borderColor: "rgba(200,169,107,0.4)", color: tool === t.id ? "#e6c27a" : "#cfc7b8" }}
-            >
-              {t.label}
-            </button>
-          ))}
-        </div>
-        <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(200,169,107,0.2)", borderRadius: 16, padding: "2rem" }}>
-          {tools.find((t) => t.id === tool)?.node}
-        </div>
-        <a href="#" onClick={() => window.history.pushState({}, "", "/")} className="luxury-outline light" style={{ marginTop: "2.5rem", display: "inline-flex" }}>
-          ← Back to site
-        </a>
-      </div>
-    </main>
-  );
-}
-
 function App() {
   const [isAdmin, setIsAdmin] = React.useState(() => window.location.pathname.replace(/\/$/, "") === "/admin");
 
@@ -850,7 +811,13 @@ function App() {
     return () => window.removeEventListener("popstate", onNav);
   }, []);
 
-  if (isAdmin) return <AdminPanel />;
+  if (isAdmin) {
+    return (
+      <React.Suspense fallback={<main className="min-h-screen bg-[#021B16] text-ivory" style={{ padding: "3.5rem 1.5rem" }}>Loading admin tools...</main>}>
+        <AdminPanel />
+      </React.Suspense>
+    );
+  }
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#021B16] text-ivory">

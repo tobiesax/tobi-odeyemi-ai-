@@ -922,6 +922,8 @@ a {
   padding: clamp(5rem, 8vw, 8.5rem) clamp(1.25rem, 4vw, 6rem);
   background: #f5f1e8;
   color: #071a15;
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
 }
 
 .gallery-section {
@@ -2285,30 +2287,4 @@ a {
     height: 10px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
