@@ -149,7 +149,12 @@ const faqs = [
   ["How is payment structured?", "A 50% deposit confirms the booking, with the balance due on the event day. EFT, Yoco and payment links are supported."],
 ];
 
-const instagramFeedId = "VonHTw8lx4gZIrlcH0Oi";
+const reelSlots = [
+  { title: "Restaurant Performance Reel", src: "/reel-corporate-event.mp4" },
+  { title: "Wedding / Private Function", src: "/reel-private-function.mp4" },
+  { title: "Corporate Event Reel", src: "/reel-worship-gospel.mp4" },
+  { title: "Hotel / Restaurant Residency", src: "/reel-hotel-residency-new.mp4" },
+];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -310,7 +315,25 @@ function StatsCard() {
     </motion.aside>
   );
 }
-
+function StatsStrip() {
+  return (
+    <motion.section
+      variants={fadeUp}
+      initial="hidden"
+      animate="show"
+      transition={{ delay: 0.72 }}
+      className="stats-strip"
+      aria-label="Performance highlights"
+    >
+      {stats.map(({ value, label }) => (
+        <div className="stat-tile" key={label}>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
+      ))}
+    </motion.section>
+  );
+}
 function ImageStage() {
   return (
     <motion.div
@@ -326,12 +349,11 @@ function ImageStage() {
       >
         <div className="portrait-halo" />
         <img
-          src="/tobi-odeyemi-portrait.png"
+          src="/tobi-hero-green-suit.png"
           alt="Tobi Odeyemi holding a saxophone in a green tailored suit"
           className="portrait-image"
         />
       </motion.div>
-      <StatsCard />
     </motion.div>
   );
 }
@@ -379,22 +401,30 @@ function SectionHeader({ eyebrow, title, dark = false }) {
   );
 }
 
-function InstagramFeed() {
-  React.useEffect(() => {
-    if (document.querySelector('script[src="https://w.behold.so/widget.js"]')) return;
-    const script = document.createElement("script");
-    script.type = "module";
-    script.src = "https://w.behold.so/widget.js";
-    document.head.appendChild(script);
-  }, []);
-
+function ReelShowcase() {
   return (
-    <div className="instagram-feed-shell">
-      <behold-widget feed-id={instagramFeedId}></behold-widget>
-      <div className="instagram-feed-fallback">
-        <span>Instagram feed loading</span>
+    <div className="reel-showcase-shell">
+      <div className="reel-slot-grid">
+        {reelSlots.map((item) => (
+          <article className={item.src ? "reel-slot has-video" : "reel-slot"} key={item.title}>
+            {item.src ? (
+              <video src={item.src} controls playsInline preload="metadata" />
+            ) : (
+              <div className="reel-placeholder" aria-hidden="true">
+                <i><Play size={20} fill="currentColor" strokeWidth={1.5} /></i>
+                <span>Video coming soon</span>
+              </div>
+            )}
+            <div className="reel-slot-caption">
+              <strong>{item.title}</strong>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="reel-showcase-note">
         <a href="https://www.instagram.com/officialtobiodeyemi" target="_blank" rel="noreferrer">
-          Open Instagram
+          Follow on Instagram
+          <ArrowRight size={16} strokeWidth={1.8} />
         </a>
       </div>
     </div>
@@ -455,15 +485,15 @@ function MusicSection() {
       <div className="section-inner">
         <SectionHeader eyebrow="Watch & Follow" title="Music & Instagram" />
         <div className="music-layout">
-          <div>
-            <p className="section-copy">Live clips, behind-the-scenes moments and updates from the latest premium events.</p>
+          <div className="reels-column">
+            <p className="section-copy">A dedicated reel library for short performance clips, event highlights and behind-the-scenes moments.</p>
             <a className="luxury-outline light" href="https://www.instagram.com/officialtobiodeyemi" target="_blank" rel="noreferrer">
               Follow on Instagram
               <ArrowRight size={18} />
             </a>
-            <InstagramFeed />
+            <ReelShowcase />
           </div>
-          <div>
+          <div className="youtube-column">
             <div className="media-heading">
               <span>Latest Videos on YouTube</span>
               <a href="https://youtube.com/@tobiesax" target="_blank" rel="noreferrer">@tobiesax</a>
@@ -599,52 +629,34 @@ function BookingSection() {
     const formData = new FormData(formEl);
     const fields = Object.fromEntries(formData.entries());
 
-    // Send to n8n Enquiry Intake: calendar check, AI drafted reply,
-    // logging to the Enquiries tab, and a Telegram alert to Tobi.
-    const enquiryPromise = fetch("https://n8n-production-3c62.up.railway.app/webhook/enquiry-intake", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fields),
-    }).catch(() => null);
-
-    // Also send to n8n Lead Scorer: tiers the lead (Hot/Warm/Cold) for ad-traffic
-    // prioritisation, logging to the Leads tab with its own Telegram alert for Hot leads.
-    // Field names are mapped here since Lead Scorer expects a slightly different shape
-    // (single "name" field, camelCase event fields) than the raw form fields.
-    const leadScorerPayload = {
+    const inquiryPayload = {
       name: `${fields.first_name || ""} ${fields.last_name || ""}`.trim(),
+      firstName: fields.first_name || "",
+      lastName: fields.last_name || "",
+      email: fields.email || "",
+      phone: fields.phone || "",
       eventType: fields.event_type || "",
       eventDate: fields.event_date || "",
       guests: fields.guest_count || "",
       notes: fields.message || "",
-      contact: fields.email || fields.phone || "",
+      contact: [fields.email, fields.phone].filter(Boolean).join(" / "),
+      source: "website-booking-form",
     };
-    const leadScorerPromise = fetch("https://n8n-production-3c62.up.railway.app/webhook/lead-scorer", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(leadScorerPayload),
-    }).catch(() => null);
-
-    // Also send to Web3Forms as a simple backup email notification,
-    // independent of whether the automation succeeds.
-    formData.append("access_key", "44652ccc-1185-4fcf-9f23-9a587e39bc0e");
-    formData.append("subject", "New Booking Enquiry - Tobi Odeyemi");
-    formData.append("from_name", "Tobi Odeyemi Website");
-    const web3formsPromise = fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    }).catch(() => null);
 
     try {
-      const [enquiryRes, leadScorerRes, web3Res] = await Promise.all([
-        enquiryPromise,
-        leadScorerPromise,
-        web3formsPromise,
-      ]);
-      const succeeded =
-        (enquiryRes && enquiryRes.ok) || (leadScorerRes && leadScorerRes.ok) || (web3Res && web3Res.ok);
-      setFormStatus(succeeded ? "sent" : "error");
-      if (succeeded) formEl.reset();
+      const response = await fetch("/api/send-inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inquiryPayload),
+      });
+
+      if (response.ok) {
+        setFormStatus("sent");
+        formEl.reset();
+        return;
+      }
+
+      setFormStatus("error");
     } catch {
       setFormStatus("error");
     }
@@ -746,8 +758,6 @@ function HeroCopy() {
         hotels, restaurants and exclusive venues across Johannesburg.
       </motion.p>
 
-      <GenreTags />
-
       <motion.div variants={fadeUp} className="hero-actions">
         <a className="book-button hero-primary" href="#book">
           Book Tobi
@@ -763,7 +773,22 @@ function HeroCopy() {
     </motion.div>
   );
 }
-
+function QuickEnquiryBand() {
+  return (
+    <section className="quick-enquiry-band" aria-label="Quick booking enquiry">
+      <div className="quick-enquiry-inner">
+        <div>
+          <span>Ready to check availability?</span>
+          <strong>Tell Tobi the date, venue and occasion.</strong>
+        </div>
+        <a className="book-button" href="#book">
+          Start Enquiry
+          <ArrowRight size={18} strokeWidth={1.7} />
+        </a>
+      </div>
+    </section>
+  );
+}
 function AdminPanel() {
   const [tool, setTool] = React.useState("leads");
   const tools = [
@@ -823,14 +848,16 @@ function App() {
           <HeroCopy />
           <ImageStage />
         </div>
+        <StatsStrip />
         <TrustBar />
       </section>
-      <AboutSection />
+      <QuickEnquiryBand />
       <MusicSection />
       <ServicesSection />
       <ClientsSection />
-      <GallerySection />
       <ReviewsSection />
+      <GallerySection />
+      <AboutSection />
       <BookingSection />
       <FaqSection />
       <Footer />
@@ -843,3 +870,5 @@ function App() {
 }
 
 createRoot(document.getElementById("root")).render(<App />);
+
+
