@@ -295,14 +295,47 @@ export function TestimonialEngine({ reviews }) {
 /* ──────────────────────────────────────────────────────────────────────────
    5. FLOATING ENQUIRY BOT — launcher bubble + chat panel for bookings & enquiries
    ────────────────────────────────────────────────────────────────────────── */
-const ENQUIRY_SYSTEM = `You are Tobi Odeyemi's booking enquiry assistant, available as a floating chat widget on his website. Tobi is a premium saxophonist based in Johannesburg. Genres: Contemporary Jazz, Afro Fusion, Afro Pop, Soul & R&B, Gospel. Pricing: Private Function R10,000 | Corporate Event R15,000 | Hotel/Restaurant Residencies custom rate. Standard performance 1-2 hours, 2-3 sets for galas/weddings. Travels across South Africa, international on request. 50% deposit, balance on event day. Book 3-4 weeks ahead, peak season Oct-Dec and April. Contact: tobisax@gmail.com | 073 507 4691.
-Your job: answer questions about pricing, availability and genres briefly (2-3 sentences), and gently guide visitors with a real booking interest toward sharing their event type, date, and contact details so Tobi can follow up directly. Be warm or able to say tell them to use the booking form below for fastest service if they want a comprehensive option.`;
+const enquiryReplies = [
+  {
+    match: ["service", "offer", "perform", "function", "event"],
+    reply: "Tobi performs for weddings, corporate events, private functions, hotels, restaurants and luxury venue experiences. For the fastest answer, send the event date, venue and occasion through the booking form below.",
+  },
+  {
+    match: ["book", "booking", "availability", "available", "date"],
+    reply: "To check availability, use the booking form and include your event date, venue, event type and contact details. It goes straight to Tobi's Gmail so he can follow up directly.",
+  },
+  {
+    match: ["price", "pricing", "cost", "rate", "rates", "quote", "fee"],
+    reply: "Rates depend on the event type, performance length, location and any sound or travel needs. Send the details through the booking form and Tobi can reply with the right quote.",
+  },
+  {
+    match: ["where", "location", "located", "johannesburg", "travel", "outside"],
+    reply: "Tobi is based in Johannesburg and is available across South Africa, with international bookings considered depending on logistics. Add the venue or city in the form so travel can be factored in.",
+  },
+  {
+    match: ["genre", "music", "songs", "jazz", "afro", "gospel", "soul", "r&b", "rnb"],
+    reply: "Tobi's sets can include contemporary jazz, Afro fusion, Afro pop, soul, R&B and gospel. Share the mood you want for the event and he can tailor the set around it.",
+  },
+  {
+    match: ["equipment", "sound", "pa", "speaker", "speakers"],
+    reply: "Tobi performs with professional saxophone and backing-track setup. For larger venues, a PA or house sound system is helpful, so include venue details when you enquire.",
+  },
+];
+
+function getEnquiryReply(question) {
+  const normalised = question.toLowerCase();
+  const found = enquiryReplies.find((item) => item.match.some((keyword) => normalised.includes(keyword)));
+
+  if (found) return found.reply;
+
+  return "The best next step is to send your event type, date, venue and contact details through the booking form below. That gives Tobi everything he needs to confirm availability and next steps.";
+}
 
 export function FloatingEnquiryBot() {
   const [open, setOpen] = React.useState(false);
   const [messages, setMessages] = React.useState([
-    { role: "assistant", content: "Hi! I'm Tobi's virtual booking assistant. 🎷" },
-    { role: "assistant", content: "Ask me about pricing, availability, genres or how to book." },
+    { role: "assistant", content: "Hi, I'm Tobi's virtual booking assistant." },
+    { role: "assistant", content: "Ask me about services, availability, genres or how to book." },
   ]);
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -312,26 +345,22 @@ export function FloatingEnquiryBot() {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [messages, open]);
 
-  async function ask(q) {
+  function ask(q) {
     const question = q || input.trim();
     if (!question || loading) return;
-    const next = [...messages, { role: "user", content: question }];
-    setMessages(next);
+
+    setMessages((current) => [
+      ...current,
+      { role: "user", content: question },
+      { role: "assistant", content: getEnquiryReply(question) },
+    ]);
     setInput("");
-    setLoading(true);
-    try {
-      const reply = await askClaude({ system: ENQUIRY_SYSTEM, messages: next, maxTokens: 220 });
-      setMessages((m) => [...m, { role: "assistant", content: reply }]);
-    } catch {
-      setMessages((m) => [...m, { role: "assistant", content: "WhatsApp Tobi on 073 507 4691 for immediate help." }]);
-    }
-    setLoading(false);
   }
 
   const quickQ = [
     "What services do you offer?",
     "How do I book?",
-    "What are your prices?",
+    "How do I get a quote?",
     "Where are you located?",
     "Do you travel outside JHB?",
     "What genres do you play?",
@@ -375,7 +404,7 @@ export function FloatingEnquiryBot() {
           </div>
 
           <div className="ai-input-row">
-            <input className="ai-input" value={input} placeholder="Ask me anything..." onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && ask()} />
+            <input className="ai-input" value={input} placeholder="Ask about bookings..." onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && ask()} />
             <button className="ai-send" type="button" onClick={() => ask()} disabled={loading || !input.trim()} aria-label="Ask"><Send size={17} /></button>
           </div>
           <a href="#book" className="enquiry-panel-cta" onClick={() => setOpen(false)}>Go to full booking form <ArrowRight size={14} /></a>
@@ -567,3 +596,4 @@ export function ResidencyPitchGenerator() {
     </div>
   );
 }
+
