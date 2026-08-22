@@ -768,7 +768,7 @@ function HeroCopy() {
 
       <motion.p variants={fadeUp} className="hero-description">
         Premium saxophone entertainment for corporate events, private functions,
-        hotels, restaurants and exclusive venues across Johannesburg.
+        hotels, restaurants, weddings, and exclusive venues across South Africa.
       </motion.p>
 
       <motion.div variants={fadeUp} className="hero-actions">
