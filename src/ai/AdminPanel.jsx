@@ -1,4 +1,5 @@
 import React from "react";
+import MarketingOps from "./MarketingOps";
 import {
   ContentCalendar,
   LeadScorer,
@@ -11,6 +12,7 @@ export default function AdminPanel() {
     { id: "leads", label: "Lead Scorer", node: <LeadScorer /> },
     { id: "calendar", label: "Content Calendar", node: <ContentCalendar /> },
     { id: "pitch", label: "Residency Pitch", node: <ResidencyPitchGenerator /> },
+    { id: "marketing", label: "Marketing Agents", node: <MarketingOps /> },
   ];
 
   return (
@@ -43,3 +45,4 @@ export default function AdminPanel() {
     </main>
   );
 }
+
