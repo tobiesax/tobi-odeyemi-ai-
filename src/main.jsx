@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import "./styles.css";
 import {
-  FloatingEnquiryBot,
   ContentCalendar,
   LeadScorer,
   ResidencyPitchGenerator,
@@ -878,12 +877,9 @@ function App() {
       <a className="whatsapp-float" href="https://wa.me/27735074691?text=Hi%20Tobi%2C%20I%27d%20like%20to%20book%20you%20for%20an%20event." target="_blank" rel="noreferrer" aria-label="Contact Tobi Odeyemi on WhatsApp">
         <WhatsAppIcon size={30} />
       </a>
-      <FloatingEnquiryBot />
     </main>
   );
 }
 
 createRoot(document.getElementById("root")).render(<App />);
-
-
 
