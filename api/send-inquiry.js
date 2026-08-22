@@ -1,4 +1,5 @@
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const TELEGRAM_ENDPOINT = "https://api.telegram.org";
 const requiredFields = ["name", "email", "eventType", "eventDate"];
 
 function json(res, statusCode, body) {
@@ -63,6 +64,48 @@ function buildEmailText(inquiry) {
     "Message:",
     inquiry.notes || "No message provided.",
   ].join("\n");
+}
+
+function buildTelegramText(inquiry) {
+  return [
+    "New website enquiry",
+    "",
+    "Event: " + inquiry.eventType,
+    "Date: " + inquiry.eventDate,
+    "Name: " + inquiry.name,
+    "Email: " + inquiry.email,
+    "Phone: " + (inquiry.phone || "Not provided"),
+    "Guests: " + (inquiry.guests || "Not provided"),
+    "",
+    "Message:",
+    inquiry.notes || "No message provided.",
+  ].join("\n");
+}
+
+async function sendTelegramAlert(inquiry) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID;
+
+  if (!botToken || !chatId) {
+    return { skipped: true };
+  }
+
+  const response = await fetch(TELEGRAM_ENDPOINT + "/bot" + botToken + "/sendMessage", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: buildTelegramText(inquiry),
+      disable_web_page_preview: true,
+    }),
+  });
+
+  if (!response.ok) {
+    const detail = await response.text().catch(() => "");
+    throw new Error("Telegram alert failed: " + response.status + " " + detail);
+  }
+
+  return response.json().catch(() => ({ ok: true }));
 }
 
 module.exports = async function handler(req, res) {
@@ -131,6 +174,13 @@ module.exports = async function handler(req, res) {
   }
 
   const result = await resendResponse.json().catch(() => ({}));
+
+  try {
+    await sendTelegramAlert(inquiry);
+  } catch (error) {
+    console.error(error.message || "Telegram alert failed");
+  }
+
   return json(res, 200, { success: true, id: result.id || null });
-}
+};
 
