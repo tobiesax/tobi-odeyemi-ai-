@@ -608,11 +608,6 @@ function ReviewsSection() {
     <section className="content-section black-section" id="reviews">
       <div className="section-inner">
         <SectionHeader eyebrow="What People Say" title="Reviews" dark />
-        <div className="review-metrics">
-          {["5.0 Google Rating", "500+ Events", "20+ Years", "100% Would Rebook"].map((metric) => (
-            <span key={metric}>{metric}</span>
-          ))}
-        </div>
         <div className="reviews-grid">
           {reviews.map((review) => (
             <article className="review-card" key={review.name}>
