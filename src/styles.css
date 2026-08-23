@@ -1202,14 +1202,17 @@ a {
 
 .reel-slot-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(220px, 360px));
+  justify-content: center;
   gap: 0.78rem;
 }
 
 .reel-slot {
   position: relative;
   overflow: hidden;
-  min-height: 360px;
+  width: 100%;
+  max-width: 360px;
+  min-height: 0;
   aspect-ratio: 9 / 16;
   border: 1px solid rgba(7, 26, 21, 0.12);
   background: #071a15;
@@ -2494,7 +2497,6 @@ a {
     min-height: 430px;
   }
 
-  .reel-slot-grid,
   .highlight-grid,
   .video-grid,
   .services-grid,
@@ -2505,6 +2507,10 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .reel-slot-grid {
+    grid-template-columns: minmax(0, min(100%, 360px));
+    justify-content: center;
+  }
 
   .reel-showcase-note {
     align-items: flex-start;
