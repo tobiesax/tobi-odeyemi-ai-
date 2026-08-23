@@ -2387,8 +2387,9 @@ a {
   }
 
   .image-stage {
-    min-height: 540px;
+    min-height: 455px;
     margin-top: 1.25rem;
+    overflow: clip;
   }
 
   .rings-one {
@@ -2407,16 +2408,24 @@ a {
 
   .portrait-wrap {
     right: 50%;
-    bottom: 0;
-    width: min(360px, 82vw);
-    padding-inline: 0.35rem;
+    top: -0.6rem;
+    bottom: auto;
+    width: min(430px, 102vw);
+    max-height: 438px;
+    padding-inline: 0;
+    overflow: clip;
     translate: 50% 0;
+  }
+
+  .portrait-image {
+    width: 100%;
+    max-height: none;
   }
 
   .stats-card {
     top: auto;
     right: 50%;
-    bottom: 1.2rem;
+    bottom: 0.75rem;
     display: grid;
     width: min(92vw, 430px);
     grid-template-columns: repeat(3, minmax(0, 1fr));
