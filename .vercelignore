@@ -5,3 +5,15 @@ docs
 desktop-review.png
 mobile-review.png
 public/gallery-originals
+.deck-build
+src/remotion
+public/audio
+public/sfx
+public/voiceover
+Tobi_Marketing_Agent_System_Pitch*.pptx
+Tobi_Marketing_Agent_System_Pitch*.ndjson
+Tobi_Marketing_Agent_System_Pitch_Video*.mp4
+Tobi_Marketing_Agent_System_Voiceover.txt
+MARKETING_AGENT_SYSTEM_REPORT.md
+MARKETING_AGENT_SECRETS.local.txt
+opening-*.png
