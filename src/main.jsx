@@ -6,6 +6,8 @@ import {
   CalendarDays,
   Check,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Headphones,
   Heart,
   Mail,
@@ -604,21 +606,51 @@ function GallerySection() {
 }
 
 function ReviewsSection() {
+  const [activeReview, setActiveReview] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveReview((current) => (current + 1) % reviews.length);
+    }, 6500);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const review = reviews[activeReview];
+  const previousReview = () => setActiveReview((current) => (current - 1 + reviews.length) % reviews.length);
+  const nextReview = () => setActiveReview((current) => (current + 1) % reviews.length);
+
   return (
     <section className="content-section black-section" id="reviews">
       <div className="section-inner">
         <SectionHeader eyebrow="What People Say" title="Reviews" dark />
-        <div className="reviews-grid">
-          {reviews.map((review) => (
-            <article className="review-card" key={review.name}>
-              <div className="review-top">
-                <i>{review.initials}</i>
-                <div><strong>{review.name}</strong><span>{review.event}</span></div>
-              </div>
-              <div className="stars">★★★★★</div>
-              <p>"{review.text}"</p>
-              <em>{review.source}</em>
-            </article>
+        <div className="reviews-carousel" aria-roledescription="carousel" aria-label="Client reviews">
+          <button className="review-arrow" type="button" onClick={previousReview} aria-label="Previous review">
+            <ChevronLeft size={22} />
+          </button>
+          <article className="review-card review-card-featured" key={review.name}>
+            <div className="review-top">
+              <i aria-hidden="true">{review.initials}</i>
+              <div><strong>{review.name}</strong><span>{review.event}</span></div>
+            </div>
+            <div className="stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p>"{review.text}"</p>
+            <em>{review.source}</em>
+          </article>
+          <button className="review-arrow" type="button" onClick={nextReview} aria-label="Next review">
+            <ChevronRight size={22} />
+          </button>
+        </div>
+        <div className="review-dots" aria-label="Choose review">
+          {reviews.map((item, index) => (
+            <button
+              className={index === activeReview ? "is-active" : ""}
+              type="button"
+              key={item.name}
+              onClick={() => setActiveReview(index)}
+              aria-label={`Show review from ${item.name}`}
+              aria-pressed={index === activeReview}
+            />
           ))}
         </div>
       </div>
