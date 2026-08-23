@@ -144,10 +144,10 @@ const faqs = [
 ];
 
 const reelSlots = [
-  { title: "Restaurant Performance Reel", src: "/reel-corporate-event.mp4" },
-  { title: "Wedding / Private Function", src: "/reel-private-function.mp4" },
-  { title: "Corporate Event Reel", src: "/reel-worship-gospel.mp4" },
-  { title: "Hotel / Restaurant Residency", src: "/reel-hotel-residency-new.mp4" },
+  { title: "Restaurant Performance Reel", src: "/reel-corporate-event.mp4", poster: "/reel-corporate-event-poster.jpg" },
+  { title: "Wedding / Private Function", src: "/reel-private-function.mp4", poster: "/reel-private-function-poster.jpg" },
+  { title: "Corporate Event Reel", src: "/reel-worship-gospel.mp4", poster: "/reel-worship-gospel-poster.jpg" },
+  { title: "Hotel / Restaurant Residency", src: "/reel-hotel-residency-new.mp4", poster: "/reel-hotel-residency-new-poster.jpg" },
 ];
 
 const fadeUp = {
@@ -416,7 +416,7 @@ function ReelShowcase() {
         {reelSlots.map((item) => (
           <article className={item.src ? "reel-slot has-video" : "reel-slot"} key={item.title}>
             {item.src ? (
-              <video src={item.src} controls playsInline preload="none" />
+              <video src={item.src} poster={item.poster} controls playsInline preload="metadata" />
             ) : (
               <div className="reel-placeholder" aria-hidden="true">
                 <i><Play size={20} fill="currentColor" strokeWidth={1.5} /></i>
