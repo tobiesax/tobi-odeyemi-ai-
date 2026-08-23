@@ -608,6 +608,7 @@ function GallerySection() {
 function ReviewsSection() {
   const [activeReview, setActiveReview] = React.useState(0);
 
+
   React.useEffect(() => {
     const timer = window.setInterval(() => {
       setActiveReview((current) => (current + 1) % reviews.length);
@@ -854,13 +855,17 @@ function App() {
   const [isAdmin, setIsAdmin] = React.useState(() => window.location.pathname.replace(/\/$/, "") === "/admin");
 
   React.useEffect(() => {
+    if (isAdmin) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, [isAdmin]);
+
+  React.useEffect(() => {
     const onNav = () => setIsAdmin(window.location.pathname.replace(/\/$/, "") === "/admin");
     window.addEventListener("popstate", onNav);
     return () => window.removeEventListener("popstate", onNav);
   }, []);
 
   const [showFloatingActions, setShowFloatingActions] = React.useState(false);
-
   React.useEffect(() => {
     if (isAdmin) return undefined;
 
@@ -880,7 +885,6 @@ function App() {
 
     return () => revealObserver.disconnect();
   }, [isAdmin]);
-
   React.useEffect(() => {
     if (isAdmin) return undefined;
 
