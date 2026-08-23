@@ -351,7 +351,7 @@ a {
   position: relative;
   align-self: stretch;
   min-height: 600px;
-  overflow: clip;
+  overflow: visible;
 }
 
 .portrait-wrap {
@@ -377,18 +377,6 @@ a {
   object-position: top center;
   filter: saturate(1.04) contrast(1.02) drop-shadow(0 34px 55px rgba(0, 0, 0, 0.42));
 }
-
-.portrait-halo {
-  position: absolute;
-  inset: 0 -22% 6%;
-  z-index: -1;
-  border-radius: 999px;
-  background:
-    radial-gradient(circle at 58% 45%, rgba(230, 194, 122, 0.28), transparent 25%),
-    radial-gradient(circle at 50% 50%, rgba(42, 157, 111, 0.92), rgba(11, 59, 46, 0.38) 48%, transparent 74%);
-  filter: blur(14px);
-}
-
 .stats-card {
   position: absolute;
   right: 0;
@@ -2423,14 +2411,6 @@ a {
     width: min(360px, 82vw);
     padding-inline: 0.35rem;
     translate: 50% 0;
-  }
-
-  .portrait-halo {
-    inset: 2% -18% 12%;
-    background:
-      radial-gradient(circle at 57% 45%, rgba(230, 194, 122, 0.26), transparent 24%),
-      radial-gradient(circle at 50% 50%, rgba(42, 157, 111, 0.9), rgba(11, 59, 46, 0.34) 50%, transparent 75%);
-    filter: blur(12px);
   }
 
   .stats-card {

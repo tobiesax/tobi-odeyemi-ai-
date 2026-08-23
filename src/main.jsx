@@ -344,7 +344,6 @@ function ImageStage() {
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
         className="portrait-wrap"
       >
-        <div className="portrait-halo" />
         <picture>
           <source
             type="image/webp"
