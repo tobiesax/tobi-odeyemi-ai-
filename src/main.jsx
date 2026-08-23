@@ -760,21 +760,38 @@ function FaqSection() {
 }
 
 function Footer() {
+  const footerLinks = [...navItems, "Booking"];
+
   return (
     <footer className="site-footer">
-      <div>
-        <img src="/tobi-logo.png" alt="Tobi Odeyemi" className="footer-logo-img" />
-        <span>Saxophonist / Johannesburg</span>
+      <div className="footer-main">
+        <div className="footer-brand">
+          <img src="/tobi-logo.png" alt="Tobi Odeyemi" className="footer-logo-img" />
+          <p>Premium saxophone entertainment for private celebrations, corporate events, hotels and exclusive venues across South Africa.</p>
+          <a className="footer-cta" href="#book">Start an enquiry <ArrowRight size={18} /></a>
+        </div>
+
+        <nav className="footer-nav" aria-label="Footer navigation">
+          <span>Explore</span>
+          {footerLinks.map((item) => (
+            <a href={item === "Booking" ? "#book" : `#${item.toLowerCase()}`} key={item}>{item}</a>
+          ))}
+        </nav>
+
+        <div className="footer-contact">
+          <span>Contact</span>
+          <a href="tel:+27735074691"><Phone size={17} />073 507 4691</a>
+          <a href="mailto:tobisax@gmail.com"><Mail size={17} />tobisax@gmail.com</a>
+          <p><MapPin size={17} />Johannesburg, South Africa</p>
+        </div>
       </div>
-      <nav>
-        {[...navItems, "Booking"].map((item) => (
-          <a href={item === "Booking" ? "#book" : `#${item.toLowerCase()}`} key={item}>{item}</a>
-        ))}
-      </nav>
-      <div className="footer-socials">
-        <a href="https://www.instagram.com/officialtobiodeyemi" target="_blank" rel="noreferrer">Instagram</a>
-        <a href="https://youtube.com/@tobiesax" target="_blank" rel="noreferrer">YouTube</a>
-        <span>© 2026 Tobi Odeyemi</span>
+
+      <div className="footer-bottom">
+        <span>© 2026 Tobi Odeyemi. All rights reserved.</span>
+        <div className="footer-socials">
+          <a href="https://www.instagram.com/officialtobiodeyemi" target="_blank" rel="noreferrer">Instagram</a>
+          <a href="https://youtube.com/@tobiesax" target="_blank" rel="noreferrer">YouTube</a>
+        </div>
       </div>
     </footer>
   );
