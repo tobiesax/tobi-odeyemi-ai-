@@ -65,7 +65,7 @@ a {
 
 @media (min-width: 768px) {
   .mobile-menu-button {
-    display: none;
+    display: none !important;
   }
 }
 
