@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUp,
   CalendarDays,
   Check,
   ChevronDown,
@@ -868,7 +869,7 @@ function App() {
   }
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#021B16] text-ivory">
+    <main id="top" className="min-h-screen overflow-hidden bg-[#021B16] text-ivory">
       <Navbar />
       <section className="hero-shell" aria-labelledby="hero-title">
         <BackgroundAtmosphere />
@@ -889,6 +890,9 @@ function App() {
       <BookingSection />
       <FaqSection />
       <Footer />
+      <a className="back-to-top" href="#top" aria-label="Back to top">
+        <ArrowUp size={24} />
+      </a>
       <a className="whatsapp-float" href="https://wa.me/27735074691?text=Hi%20Tobi%2C%20I%27d%20like%20to%20book%20you%20for%20an%20event." target="_blank" rel="noreferrer" aria-label="Contact Tobi Odeyemi on WhatsApp">
         <WhatsAppIcon size={30} />
       </a>
