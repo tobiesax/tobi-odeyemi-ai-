@@ -860,6 +860,46 @@ function App() {
     return () => window.removeEventListener("popstate", onNav);
   }, []);
 
+  const [showFloatingActions, setShowFloatingActions] = React.useState(false);
+
+  React.useEffect(() => {
+    if (isAdmin) return undefined;
+
+    const revealTargets = document.querySelectorAll(".quick-enquiry-band, .content-section, .site-footer");
+    revealTargets.forEach((target) => target.classList.add("section-reveal"));
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("section-visible");
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: "0px 0px -12% 0px", threshold: 0.14 });
+
+    revealTargets.forEach((target) => revealObserver.observe(target));
+
+    return () => revealObserver.disconnect();
+  }, [isAdmin]);
+
+  React.useEffect(() => {
+    if (isAdmin) return undefined;
+
+    const updateFloatingActions = () => {
+      const hero = document.querySelector(".hero-shell");
+      if (!hero) return;
+      setShowFloatingActions(window.scrollY > hero.offsetHeight - 96);
+    };
+
+    updateFloatingActions();
+    window.addEventListener("scroll", updateFloatingActions, { passive: true });
+    window.addEventListener("resize", updateFloatingActions);
+
+    return () => {
+      window.removeEventListener("scroll", updateFloatingActions);
+      window.removeEventListener("resize", updateFloatingActions);
+    };
+  }, [isAdmin]);
   if (isAdmin) {
     return (
       <React.Suspense fallback={<main className="min-h-screen bg-[#021B16] text-ivory" style={{ padding: "3.5rem 1.5rem" }}>Loading admin tools...</main>}>
@@ -890,10 +930,10 @@ function App() {
       <BookingSection />
       <FaqSection />
       <Footer />
-      <a className="back-to-top" href="#top" aria-label="Back to top">
+      <a className={showFloatingActions ? "back-to-top" : "back-to-top floating-hidden"} href="#top" aria-label="Back to top">
         <ArrowUp size={24} />
       </a>
-      <a className="whatsapp-float" href="https://wa.me/27735074691?text=Hi%20Tobi%2C%20I%27d%20like%20to%20book%20you%20for%20an%20event." target="_blank" rel="noreferrer" aria-label="Contact Tobi Odeyemi on WhatsApp">
+      <a className={showFloatingActions ? "whatsapp-float" : "whatsapp-float floating-hidden"} href="https://wa.me/27735074691?text=Hi%20Tobi%2C%20I%27d%20like%20to%20book%20you%20for%20an%20event." target="_blank" rel="noreferrer" aria-label="Contact Tobi Odeyemi on WhatsApp">
         <WhatsAppIcon size={30} />
       </a>
     </main>
