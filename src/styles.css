@@ -1777,21 +1777,42 @@ a {
   background: rgba(255, 255, 255, 0.4);
 }
 
-.contact-column a:not(.luxury-outline),
-.contact-column span {
+.availability-list {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem;
+  border: 1px solid rgba(7, 26, 21, 0.1);
+  background: rgba(245, 241, 232, 0.58);
+}
+
+.availability-list span {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 38px;
+  padding: 0.62rem 0.72rem;
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  background: rgba(255, 255, 255, 0.46);
+  color: #071a15;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.availability-list svg {
+  flex: 0 0 auto;
+  color: #1b5e3c;
+}
+
+.contact-column > a:not(.luxury-outline),
+.contact-column > span {
   display: flex;
   align-items: center;
   gap: 0.8rem;
   border-bottom: 1px solid rgba(7, 26, 21, 0.12);
-  padding: 1rem 0.25rem;
+  padding: 0.9rem 0.25rem;
   color: #071a15;
   font-weight: 800;
-}
-
-.contact-column .availability-list span {
-  padding-left: 3.35rem;
-  padding-right: 1.55rem;
-  border: 1px solid rgba(7, 26, 21, 0.12);
 }
 .booking-form {
   display: grid;

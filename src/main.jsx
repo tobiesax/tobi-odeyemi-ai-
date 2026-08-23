@@ -709,7 +709,11 @@ function BookingSection() {
         <div className="booking-panel">
           <div className="contact-column">
             <p className="section-copy">Available for private and corporate functions across South Africa and internationally.</p>
-            <div className="availability-list"><span>Within 24 hours response</span><span>2 weeks notice preferred</span><span>50% deposit to confirm</span></div>
+            <div className="availability-list" aria-label="Booking notes">
+              <span><Check size={16} />Replies within 24 hours</span>
+              <span><CalendarDays size={16} />2 weeks' notice preferred</span>
+              <span><Check size={16} />50% deposit confirms booking</span>
+            </div>
             <a href="tel:+27735074691"><Phone size={19} />073 507 4691</a>
             <a href="mailto:tobisax@gmail.com"><Mail size={19} />tobisax@gmail.com</a>
             <span><MapPin size={19} />Johannesburg, South Africa</span>
