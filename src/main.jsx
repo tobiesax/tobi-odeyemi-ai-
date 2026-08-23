@@ -79,12 +79,12 @@ const serviceCards = [
   },
 ];
 
-const clientLogos = ["Cisco", "AmCham", "Deloitte", "Vodacom", "CEO Awards", "Powerstar", "AFGRI"];
+const clientLogos = ["Cisco", "American Chamber of Commerce South Africa", "Deloitte", "Vodacom", "Sun City", "Emperors Palace", "Powerstar", "AFGRI"];
 
 const galleryItems = [
   { title: "Garden Performance", src: "/gallery-01-optimized.jpg", tone: "mono" },
   { title: "CEIAS Awards", src: "/gallery-02-optimized.jpg", tone: "event" },
-  { title: "AmCham South Africa", src: "/gallery-03-optimized.jpg", tone: "portrait" },
+  { title: "American Chamber of Commerce South Africa", src: "/gallery-03-optimized.jpg", tone: "portrait" },
   { title: "Deloitte Impact Awards", src: "/gallery-04-optimized.jpg", tone: "event" },
   { title: "Cisco Partner Event", src: "/gallery-05-optimized.jpg", tone: "portrait" },
   { title: "Vodacom Outdoor Function", src: "/gallery-06-optimized.jpg", tone: "lifestyle" },
